@@ -12,7 +12,19 @@ import {
 import Navbar from "../components/navbar";
 import { useEffect } from "react";
 
-const invoices = [
+type PaymentStatus = 'Approved' | 'Pending' | 'Rejected' | 'Paid';
+
+interface Invoice {
+    invoice: string;
+    paymentStatus: PaymentStatus;
+    totalAmount: string;
+    paymentMethod: string;
+    fromDate: string;
+    toDate: string;
+    Comments?: string;
+}
+
+const invoices: Invoice[] = [
     {
         invoice: "INV001",
         paymentStatus: "Approved",
@@ -39,7 +51,6 @@ const invoices = [
         fromDate: "22-06-2024",
         toDate: "22-06-2024",
         Comments: "An array of strings representing the given object's own enumerable string-keyed property keys."
-
     },
     {
         invoice: "INV004",
@@ -57,7 +68,6 @@ const invoices = [
         paymentMethod: "PayPal",
         fromDate: "22-06-2024",
         toDate: "22-06-2024",
-
     },
     {
         invoice: "INV006",
@@ -66,7 +76,6 @@ const invoices = [
         paymentMethod: "Bank Transfer",
         fromDate: "22-06-2024",
         toDate: "22-06-2024",
-
     },
     {
         invoice: "INV007",
@@ -77,9 +86,9 @@ const invoices = [
         toDate: "22-06-2024",
         Comments: "An array of strings representing the given object's own enumerable string-keyed property keys."
     },
-]
+];
 
-const statusClasses = {
+const statusClasses: { [key in PaymentStatus]: string } = {
     Approved: "bg-blue-500 text-white",
     Pending: "bg-orange-500 text-white",
     Rejected: "bg-red-500 text-white",
@@ -88,23 +97,24 @@ const statusClasses = {
 
 export default function TableDemo() {
 
-useEffect(() => {
-fetchTableData();
-}, [])
+    useEffect(() => {
+        fetchTableData();
+    }, []);
 
-const fetchTableData = async () => {
-    try {
-        const response = await fetch('http://localhost:8081/api/claim/submitclaim', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
-          const data = JSON.stringify(response);
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
+    const fetchTableData = async () => {
+        try {
+            const response = await fetch('http://localhost:8081/api/claim/submitclaim', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
     return (
         <div>

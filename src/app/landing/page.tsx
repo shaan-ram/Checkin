@@ -12,7 +12,19 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-const invoices = [
+type PaymentStatus = 'Approved' | 'Pending' | 'Rejected' | 'Paid';
+
+interface Invoice {
+    invoice: string;
+    paymentStatus: PaymentStatus;
+    totalAmount: string;
+    paymentMethod: string;
+    fromDate: string;
+    toDate: string;
+    Comments?: string;
+}
+
+const invoices: Invoice[] = [
     {
         invoice: "INV001",
         paymentStatus: "Approved",
