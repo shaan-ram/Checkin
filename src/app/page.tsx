@@ -1,7 +1,9 @@
+// @ts-ignore  
+
 import React from 'react';
 import LoginPage from './login/page';
 
-const RootPage = () => {
+export default function RootPage() {
   return (
     <div>
       <LoginPage />
@@ -9,4 +11,4 @@ const RootPage = () => {
   );
 };
 
-export default RootPage;
+ 
