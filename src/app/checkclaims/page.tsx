@@ -1,40 +1,31 @@
 "use client";
-import { useEffect, useState } from "react";
-import Navbar from "../components/navbar";
-import { TabsDemo } from "../components/tabmenu"
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
-    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import Navbar from "../components/navbar";
+import { useEffect, useState } from "react";
+import * as React from "react";
 
 type PaymentStatus = 'Approved' | 'Pending' | 'Rejected' | 'Paid';
 
 interface Invoice {
-    date: string;
+    invoice: string;
+    date: string | null;
     category: string;
     amount: string;
-    comment: string;
+    comment: string | null;
     account_number: string;
     merchant_name: string;
     submission_status: PaymentStatus;
     manager_name: string;
 }
 
-const statusClasses: { [key in PaymentStatus]: string } = {
-    Approved: "bg-blue-500 text-white",
-    Pending: "bg-orange-500 text-white",
-    Rejected: "bg-red-500 text-white",
-    Paid: "bg-green-500 text-white",
-};
-
-export default function Landing() {
-
+export default function TableDemo() {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
 
     const fetchTableData = async () => {
@@ -61,16 +52,32 @@ export default function Landing() {
         fetchTableData();
     }, []);
 
-    return (<>
-        <Navbar />
-        <div className="py-10 mt-[96px]">
-            <TabsDemo />
-        </div>
+    const getStatusColor = (status: PaymentStatus) => {
+        switch (status) {
+            case 'Approved':
+                return 'bg-blue-500 text-white';
+            case 'Pending':
+                return 'bg-orange-500 text-white';
+            case 'Rejected':
+                return 'bg-red-500 text-white';
+            default:
+                return '';
+        }
+    };
+
+    const statusClasses: { [key in PaymentStatus]: string } = {
+        Approved: "bg-blue-500 text-white",
+        Pending: "bg-orange-500 text-white",
+        Rejected: "bg-red-500 text-white",
+        Paid: "bg-green-500 text-white",
+    };
+
+    return (
         <div>
             <Navbar />
-            <div className="flex flex-col m-10 mt-24">
-                <div className="m-14">
-                    <Table>
+            <div className="flex flex-col mt-28 m-10">
+                <div className="">
+                <Table>
                         <TableHeader className="sticky top-24 bg-white z-10">
                             <TableRow>
                                 <TableHead className="text-orange-700">Date</TableHead>
@@ -103,5 +110,5 @@ export default function Landing() {
                 </div>
             </div>
         </div>
-    </>)
+    );
 }

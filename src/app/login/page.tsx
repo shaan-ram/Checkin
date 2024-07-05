@@ -1,11 +1,8 @@
 "use client";
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import Image from 'next/image';
-import logo from '../../assets/logo.png'
 
-// const LoginPage: React.FC = () => {
-  export default function LoginPage() {
+export default function LoginPage() {
   const router = useRouter();
 
   const [user, setUser] = useState({
@@ -38,7 +35,7 @@ import logo from '../../assets/logo.png'
     if (validateForm()) {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:8080/realms/CheckIn/protocol/openid-connect/token', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL_KEYCLOAK}/realms/CheckIn/protocol/openid-connect/token`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -46,8 +43,7 @@ import logo from '../../assets/logo.png'
           body: JSON.stringify({
             grant_type: 'password',
             client_id: 'Frontend',
-            name: user.name,
-            email: user.email,
+            username: user.email,
             password: user.password,
           }),
         });
@@ -61,6 +57,7 @@ import logo from '../../assets/logo.png'
 
         if (data.message === 'Success') {
           document.cookie = `token=${data.token}; path=/`;
+          localStorage.setItem('user', JSON.stringify({ name: user.name, email: user.email }));
 
           router.push('/landing');
         } else {

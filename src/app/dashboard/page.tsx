@@ -11,8 +11,7 @@ import { Button } from '@/components/ui/button';
 import { DateRange } from "react-day-picker";
 import emailjs from '@emailjs/browser';
 
-// const DashboardPage: React.FC = () => {
-  export default function DashboardPage() {
+export default function DashboardPage() {
 
   const [dropdownValue, setDropdownValue] = React.useState("");
   const [amount, setAmount] = React.useState("");
@@ -34,7 +33,7 @@ import emailjs from '@emailjs/browser';
   const sendEmail = async (formData: any) => {
     try {
       const templateParams = {
-        // to_email: 'nationalhighway414@gmail.com',
+        to_email: 'nationalhighway414@gmail.com',
         reimbursementType: formData.reimbursementType,
         amount: formData.amount,
         paymentAccount: formData.paymentAccount,
@@ -44,11 +43,10 @@ import emailjs from '@emailjs/browser';
       };
 
       await emailjs.send(
-        'service_6plkyyh',
-        'template_e9i0o6d',
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
         templateParams,
-        'vWA2-'
-        // 'vWA2-qSD7rUVFVSqa'
+        process.env.NEXT_PUBLIC_EMAILJS_USER_ID || ''
       );
     } catch (error) {
       console.error('Error:', error);
@@ -57,14 +55,20 @@ import emailjs from '@emailjs/browser';
 
   const handleSubmit = async () => {
     const formData: { [key: string]: any } = {
-      category: dropdownValue,
-      amount,
-      account_number: paymentAccount,
-      merchant_name: merchant,
-      description,
-      date: dateRange,
-      files: []
-      // manager_name: manager
+      
+          "date": {
+            "from": "2024-07-05T10:35:27.466Z",
+            "to": "2024-07-05T10:35:27.466Z"
+          },
+          "category": "string",
+          "amount": "string",
+          "comment": "string",
+          "account_number": "string",
+          "merchant_name": "string",
+          "submission_status": "string",
+          "manager_name": "string"
+        
+      // files: []
     };
 
     const filePromises = uploadedFiles.map(async (file) => {
@@ -75,7 +79,7 @@ import emailjs from '@emailjs/browser';
     await Promise.all(filePromises);
 
     try {
-      const response = await fetch('http://localhost:8081/api/claim/submitclaim', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/claim/submitclaim`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -84,6 +88,7 @@ import emailjs from '@emailjs/browser';
       });
 
       if (response.ok) {
+        sendEmail(formData);
         setDropdownValue("");
         setAmount("");
         setPaymentAccount("");
@@ -95,8 +100,6 @@ import emailjs from '@emailjs/browser';
       }
     } catch (error) {
       console.error('Error:', error);
-    } finally {
-      await sendEmail(formData);
     }
   };
 

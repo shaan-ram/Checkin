@@ -7,9 +7,9 @@ const Sidebar: React.FC = () => {
       <div className="p-4">
         <ul className="space-y-2">
           <li>
-            <Link href="/checkstatus">
+            <Link href="/checkclaims">
               <Button variant="ghost" className="w-full flex justify-start items-center text-gray-300 hover:bg-gray-800 hover:text-white rounded transition duration-150">
-                Check status
+                Check claims
               </Button>
             </Link>
           </li>
