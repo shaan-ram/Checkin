@@ -32,8 +32,11 @@ export default function DashboardPage() {
 
   const sendEmail = async (formData: any) => {
     try {
+      const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+      const managerEmail = storedUser?.managerEmail || '';
+
       const templateParams = {
-        to_email: 'nationalhighway414@gmail.com',
+        to_email: managerEmail,
         reimbursementType: formData.reimbursementType,
         amount: formData.amount,
         paymentAccount: formData.paymentAccount,
@@ -55,20 +58,17 @@ export default function DashboardPage() {
 
   const handleSubmit = async () => {
     const formData: { [key: string]: any } = {
-      
-          "date": {
-            "from": "2024-07-05T10:35:27.466Z",
-            "to": "2024-07-05T10:35:27.466Z"
-          },
-          "category": "string",
-          "amount": "string",
-          "comment": "string",
-          "account_number": "string",
-          "merchant_name": "string",
-          "submission_status": "string",
-          "manager_name": "string"
-        
-      // files: []
+      date: {
+        from: dateRange?.from,
+        to: dateRange?.to
+      },
+      category: dropdownValue,
+      amount: amount,
+      comment: description,
+      account_number: paymentAccount,
+      merchant_name: merchant,
+      submission_status: 'Submitted',
+      manager_name: 'string'
     };
 
     const filePromises = uploadedFiles.map(async (file) => {

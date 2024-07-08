@@ -9,6 +9,7 @@ export default function LoginPage() {
     name: '',
     email: '',
     password: '',
+    managerEmail: '',
   });
 
   const [loading, setLoading] = useState(false);
@@ -16,65 +17,30 @@ export default function LoginPage() {
     name: '',
     email: '',
     password: '',
+    managerEmail: '',
   });
 
-  const validateName = (name: string) => {
+  const validateName = (name: any) => {
     return name.trim().length > 0;
   };
 
-  const validateEmail = (email: string) => {
+  const validateEmail = (email: any) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(String(email).toLowerCase());
   };
 
-  const validatePassword = (password: string) => {
+  const validatePassword = (password: any) => {
     return password.length > 0;
   };
 
-  const onLogin = async () => {
+  const onLogin = () => {
     if (validateForm()) {
-      try {
-        setLoading(true);
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL_KEYCLOAK}/realms/CheckIn/protocol/openid-connect/token`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            grant_type: 'password',
-            client_id: 'Frontend',
-            username: user.email,
-            password: user.password,
-          }),
-        });
-        console.log(response);
-
-        if (!response.ok) {
-          throw new Error('Invalid email or password');
-        }
-
-        const data = await response.json();
-
-        if (data.message === 'Success') {
-          document.cookie = `token=${data.token}; path=/`;
-          localStorage.setItem('user', JSON.stringify({ name: user.name, email: user.email }));
-
-          router.push('/landing');
-        } else {
-          setErrors({
-            ...errors,
-            email: 'Invalid email or password',
-          });
-        }
-      } catch (error) {
-        console.error('Error during login', error);
-        setErrors({
-          ...errors,
-          email: 'Invalid email or password',
-        });
-      } finally {
-        setLoading(false);
-      }
+      setLoading(true);
+      // Simulating a successful login without an API call
+      setTimeout(() => {
+        localStorage.setItem('user', JSON.stringify(user));
+        router.push('/landing');
+      }, 1000);
     }
   };
 
@@ -83,6 +49,7 @@ export default function LoginPage() {
       name: '',
       email: '',
       password: '',
+      managerEmail: '',
     };
 
     if (!validateName(user.name)) {
@@ -94,12 +61,15 @@ export default function LoginPage() {
     if (!validatePassword(user.password)) {
       newErrors.password = 'Password cannot be empty';
     }
+    if (!validateEmail(user.managerEmail)) {
+      newErrors.managerEmail = 'Invalid manager email address';
+    }
 
     setErrors(newErrors);
-    return !newErrors.name && !newErrors.email && !newErrors.password;
+    return !newErrors.name && !newErrors.email && !newErrors.password && !newErrors.managerEmail;
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: any) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
@@ -153,6 +123,17 @@ export default function LoginPage() {
                 {errors.password && (
                   <p className="text-red-500 tracking-wide text-sm">{errors.password}</p>
                 )}
+                <input
+                  className="w-full mt-5 mb-2 px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
+                  type="email"
+                  placeholder="Approvers/Managers Email"
+                  name="managerEmail"
+                  value={user.managerEmail}
+                  onChange={handleInputChange}
+                />
+                {errors.managerEmail && (
+                  <p className="text-red-500 tracking-wide text-sm">{errors.managerEmail}</p>
+                )}
                 <button
                   onClick={onLogin}
                   className="mt-7 tracking-wide font-semibold bg-black text-gray-100 w-full py-4 rounded-lg hover:bg-gray-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
@@ -178,4 +159,4 @@ export default function LoginPage() {
       </div>
     </div>
   );
-};
+}
