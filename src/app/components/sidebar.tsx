@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -14,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-const Sidebar: React.FC = () => {
+const Sidebar = () => {
   const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
   const { name, email, managerEmail } = storedUser;
 
