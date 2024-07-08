@@ -1,12 +1,10 @@
+"use client";
 import Link from 'next/link';
 import Image from 'next/image';
 import logo from '../../assets/logo.png';
 import { useRouter } from 'next/navigation';
-import { Avatar } from '@radix-ui/react-avatar';
 import Avatara from './avatar';
 import * as React from "react"
-import { MinusIcon, PlusIcon } from "@radix-ui/react-icons"
-
 import { Button } from "@/components/ui/button"
 import {
     Drawer,
@@ -49,7 +47,6 @@ const Navbar: React.FC = () => {
                                         <DrawerDescription>
                                             The reimbursement software enhances employee productivity and optimizes business processes. It facilitates the easy submission of employee expense reports, ensures policy compliance, verifies expense claims, processes reimbursements, and securely stores receipts in unified cloud storage.
                                             This platform allows companies to record, track, and process reimbursements effortlessly, eliminating the need for manual intervention.
-
                                         </DrawerDescription>
                                     </DrawerHeader>
                                     <div className="p-4 pb-0">
@@ -65,8 +62,6 @@ const Navbar: React.FC = () => {
                                 </div>
                             </DrawerContent>
                         </Drawer>
-
-
                         <div className='flex justify-center mr-6 ml-6'>
                             <Avatara />
                         </div>
