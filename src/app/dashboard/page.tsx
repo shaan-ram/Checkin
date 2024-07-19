@@ -77,9 +77,11 @@ export default function DashboardPage() {
     });
 
     await Promise.all(filePromises);
+    console.log(process.env.NEXT_PUBLIC_API_URL);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/claim/submitclaim`, {
+      const response = await fetch(`https://checkin-ui-seven.vercel.app/api/claim/submitclaim`, {
+        
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

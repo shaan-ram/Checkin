@@ -39,7 +39,7 @@ export default function Landing() {
 
     const fetchTableData = async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/claim/findbystatus`, {
+            const response = await fetch(`https://checkin-ui-seven.vercel.app/api/claim/findbystatus`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
                             <p className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</p>
                         </Link>
 
-                        {/* <Drawer>
+                        <Drawer>
                             <DrawerTrigger asChild>
                                 <Button variant="ghost" className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'>About us</Button>
                             </DrawerTrigger>
@@ -61,7 +61,7 @@ const Navbar: React.FC = () => {
                                     </div>
                                 </div>
                             </DrawerContent>
-                        </Drawer> */}
+                        </Drawer>
                         <div className='flex justify-center mr-6 ml-6'>
                             <Avatara />
                         </div>
