@@ -39,7 +39,7 @@ export default function TableDemo() {
 
     const fetchTableData = async () => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/claim/findbystatus?status=Pending`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/claim/findbystatus?status=Pending`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

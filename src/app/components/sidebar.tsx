@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '../../components/ui/button';
 import {
@@ -14,8 +15,12 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 const Sidebar = () => {
-  const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-  const { name, email, managerEmail } = storedUser;
+  const [user, setUser] = useState({ name: '', email: '', managerEmail: '' });
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+    setUser(storedUser);
+  }, []);
 
   return (
     <div className="bg-gray-700 text-white w-64 h-full overflow-y-auto">
@@ -41,15 +46,15 @@ const Sidebar = () => {
                 <div className="space-y-4">
                   <div>
                     <Label htmlFor="name">Name</Label>
-                    <Input id="name" type="text" value={name} readOnly />
+                    <Input id="name" type="text" value={user.name} readOnly />
                   </div>
                   <div>
                     <Label htmlFor="email">Email</Label>
-                    <Input id="email" type="email" value={email} readOnly />
+                    <Input id="email" type="email" value={user.email} readOnly />
                   </div>
                   <div>
                     <Label htmlFor="managerEmail">Manager's Email</Label>
-                    <Input id="managerEmail" type="email" value={managerEmail} readOnly />
+                    <Input id="managerEmail" type="email" value={user.managerEmail} readOnly />
                   </div>
                 </div>
 

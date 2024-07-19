@@ -36,7 +36,6 @@ export default function LoginPage() {
   const onLogin = () => {
     if (validateForm()) {
       setLoading(true);
-      // Simulating a successful login without an API call
       setTimeout(() => {
         localStorage.setItem('user', JSON.stringify(user));
         router.push('/landing');

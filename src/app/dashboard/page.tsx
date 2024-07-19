@@ -79,7 +79,7 @@ export default function DashboardPage() {
     await Promise.all(filePromises);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/claim/submitclaim`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/claim/submitclaim`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
