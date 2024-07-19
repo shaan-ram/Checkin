@@ -15,55 +15,90 @@ type PaymentStatus = 'Approved' | 'Pending' | 'Rejected' | 'Paid';
 
 interface Invoice {
     invoice: string;
-    date: string | null;
-    category: string;
-    amount: string;
-    comment: string | null;
-    account_number: string;
-    merchant_name: string;
+    fromDate: string;
+    toDate: string;
+    paymentMethod: string;
+    comments?: string;
+    totalAmount: string;
+    date?: string | null;
+    category?: string;
+    amount?: string;
+    account_number?: string;
+    merchant_name?: string;
+    comment?: string;
     submission_status: PaymentStatus;
-    manager_name: string;
 }
+
+const invoicesData: Invoice[] = [
+    {
+        invoice: "INV001",
+        submission_status: "Approved",
+        totalAmount: "250.00",
+        paymentMethod: "Credit Card",
+        fromDate: "22-06-2024",
+        toDate: "22-06-2024",
+        comments: "An array of strings representing the given object's own enumerable string-keyed property keys."
+    },
+    {
+        invoice: "INV002",
+        submission_status: "Pending",
+        totalAmount: "150.00",
+        paymentMethod: "PayPal",
+        fromDate: "22-06-2024",
+        toDate: "22-06-2024",
+        comments: "An array of strings representing the given object's own enumerable string-keyed property keys."
+    },
+    {
+        invoice: "INV003",
+        submission_status: "Paid",
+        totalAmount: "350.00",
+        paymentMethod: "Bank Transfer",
+        fromDate: "22-06-2024",
+        toDate: "22-06-2024",
+        comments: "An array of strings representing the given object's own enumerable string-keyed property keys."
+    },
+    {
+        invoice: "INV004",
+        submission_status: "Pending",
+        totalAmount: "450.00",
+        paymentMethod: "Credit Card",
+        fromDate: "22-06-2024",
+        toDate: "22-06-2024",
+        comments: "An array of strings representing the given object's own enumerable string-keyed property keys."
+    },
+    {
+        invoice: "INV005",
+        submission_status: "Paid",
+        totalAmount: "$550.00",
+        paymentMethod: "PayPal",
+        fromDate: "22-06-2024",
+        toDate: "22-06-2024",
+    },
+    {
+        invoice: "INV006",
+        submission_status: "Pending",
+        totalAmount: "200.00",
+        paymentMethod: "Bank Transfer",
+        fromDate: "22-06-2024",
+        toDate: "22-06-2024",
+    },
+    {
+        invoice: "INV007",
+        submission_status: "Approved",
+        totalAmount: "300.00",
+        paymentMethod: "Credit Card",
+        fromDate: "22-06-2024",
+        toDate: "22-06-2024",
+        comments: "An array of strings representing the given object's own enumerable string-keyed property keys."
+    },
+];
 
 export default function TableDemo() {
     const [invoices, setInvoices] = useState<Invoice[]>([]);
 
-    const fetchTableData = async () => {
-        try {
-            const response = await fetch(`http://3.7.102.212:8081/api/claim/findbystatus`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const data = await response.json();
-
-            if (Array.isArray(data)) {
-                setInvoices(data);
-            } else {
-                console.error('Error: API response is not an array');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
     useEffect(() => {
-        fetchTableData();
+        setInvoices(invoicesData);
     }, []);
-
-    const getStatusColor = (status: PaymentStatus) => {
-        switch (status) {
-            case 'Approved':
-                return 'bg-blue-500 text-white';
-            case 'Pending':
-                return 'bg-orange-500 text-white';
-            case 'Rejected':
-                return 'bg-red-500 text-white';
-            default:
-                return '';
-        }
-    };
 
     const statusClasses: { [key in PaymentStatus]: string } = {
         Approved: "bg-blue-500 text-white",
@@ -77,27 +112,29 @@ export default function TableDemo() {
             <Navbar />
             <div className="flex flex-col mt-28 m-10">
                 <div className="">
-                <Table>
+                    <Table>
                         <TableHeader className="sticky top-24 bg-white z-10">
                             <TableRow>
-                                <TableHead className="text-orange-700">Date</TableHead>
-                                <TableHead className="text-orange-700">Category</TableHead>
-                                <TableHead className="text-orange-700">Amount</TableHead>
-                                <TableHead className="text-orange-700 ml-10">Account Number</TableHead>
-                                <TableHead className="text-orange-700 w-36">Merchant Name</TableHead>
-                                <TableHead className="text-orange-700">Comments</TableHead>
+                                <TableHead className="text-orange-700">Id</TableHead>
+                                <TableHead className="text-orange-700">From Date</TableHead>
+                                <TableHead className="text-orange-700">To Date</TableHead>
+                                <TableHead className="text-orange-700">Method</TableHead>
+                                <TableHead className="text-orange-700 w-36">Comment</TableHead>
+                                <TableHead className="text-orange-700 ml-10">Amount</TableHead>
+                               
                                 <TableHead className="text-right text-orange-700">Status</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {invoices.map((invoice) => (
-                                <TableRow key={invoice.date}>
-                                    <TableCell className="font-medium">{invoice.date}</TableCell>
-                                    <TableCell>{invoice.category}</TableCell>
-                                    <TableCell>{invoice.amount}</TableCell>
-                                    <TableCell className="ml-10">{invoice.account_number}</TableCell>
-                                    <TableCell className="w-36">{invoice.merchant_name}</TableCell>
-                                    <TableCell>{invoice.comment}</TableCell>
+                                <TableRow key={invoice.invoice}>
+                                    <TableCell className="font-medium">{invoice.invoice}</TableCell>
+                                    <TableCell>{invoice.fromDate}</TableCell>
+                                    <TableCell>{invoice.toDate}</TableCell>
+                                    <TableCell>{invoice.paymentMethod}</TableCell>
+                                    <TableCell className="w-36">{invoice.comments}</TableCell>
+                                    <TableCell className="ml-10">{invoice.totalAmount}</TableCell>
+                                   
                                     <TableCell className="text-right">
                                         <span className={`px-2 py-1 rounded ${statusClasses[invoice.submission_status]}`}>
                                             {invoice.submission_status}

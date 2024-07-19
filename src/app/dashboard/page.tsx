@@ -81,7 +81,6 @@ export default function DashboardPage() {
 
     try {
       const response = await fetch(`http://3.7.102.212:8081/api/claim/submitclaim`, {
-        
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

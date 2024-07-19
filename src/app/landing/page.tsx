@@ -1,13 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
 import Navbar from "../components/navbar";
-import { TabsDemo } from "../components/tabmenu"
+import { TabsDemo } from "../components/tabmenu";
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
-    TableFooter,
     TableHead,
     TableHeader,
     TableRow,
@@ -16,15 +14,85 @@ import {
 type PaymentStatus = 'Approved' | 'Pending' | 'Rejected' | 'Paid';
 
 interface Invoice {
-    date: string;
-    category: string;
-    amount: string;
-    comment: string;
-    account_number: string;
-    merchant_name: string;
-    submission_status: PaymentStatus;
-    manager_name: string;
+    invoice: string;
+    paymentStatus: PaymentStatus;
+    totalAmount: string;
+    paymentMethod: string;
+    fromDate: string;
+    toDate: string;
+    comments?: string;
+    date?: string;
+    category?: string;
+    amount?: string;
+    account_number?: string;
+    merchant_name?: string;
+    comment?: string;
+    submission_status?: PaymentStatus;
 }
+
+const invoicesData: Invoice[] = [
+    {
+        invoice: "INV001",
+        paymentStatus: "Approved",
+        totalAmount: "250.00",
+        paymentMethod: "Credit Card",
+        fromDate: "22-06-2024",
+        toDate: "22-06-2024",
+        comments: "An array of strings representing the given object's own enumerable string-keyed property keys."
+    },
+    {
+        invoice: "INV002",
+        paymentStatus: "Pending",
+        totalAmount: "150.00",
+        paymentMethod: "PayPal",
+        fromDate: "22-06-2024",
+        toDate: "22-06-2024",
+        comments: "An array of strings representing the given object's own enumerable string-keyed property keys."
+    },
+    {
+        invoice: "INV003",
+        paymentStatus: "Paid",
+        totalAmount: "350.00",
+        paymentMethod: "Bank Transfer",
+        fromDate: "22-06-2024",
+        toDate: "22-06-2024",
+        comments: "An array of strings representing the given object's own enumerable string-keyed property keys."
+    },
+    {
+        invoice: "INV004",
+        paymentStatus: "Pending",
+        totalAmount: "450.00",
+        paymentMethod: "Credit Card",
+        fromDate: "22-06-2024",
+        toDate: "22-06-2024",
+        comments: "An array of strings representing the given object's own enumerable string-keyed property keys."
+    },
+    {
+        invoice: "INV005",
+        paymentStatus: "Paid",
+        totalAmount: "550.00",
+        paymentMethod: "PayPal",
+        fromDate: "22-06-2024",
+        toDate: "22-06-2024",
+    },
+    {
+        invoice: "INV006",
+        paymentStatus: "Pending",
+        totalAmount: "200.00",
+        paymentMethod: "Bank Transfer",
+        fromDate: "22-06-2024",
+        toDate: "22-06-2024",
+    },
+    {
+        invoice: "INV007",
+        paymentStatus: "Approved",
+        totalAmount: "300.00",
+        paymentMethod: "Credit Card",
+        fromDate: "22-06-2024",
+        toDate: "22-06-2024",
+        comments: "An array of strings representing the given object's own enumerable string-keyed property keys."
+    },
+];
 
 const statusClasses: { [key in PaymentStatus]: string } = {
     Approved: "bg-blue-500 text-white",
@@ -34,66 +102,46 @@ const statusClasses: { [key in PaymentStatus]: string } = {
 };
 
 export default function Landing() {
-
     const [invoices, setInvoices] = useState<Invoice[]>([]);
 
-    const fetchTableData = async () => {
-        try {
-            const response = await fetch(`http://3.7.102.212:8081/api/claim/findbystatus`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const data = await response.json();
-
-            if (Array.isArray(data)) {
-                setInvoices(data);
-            } else {
-                console.error('Error: API response is not an array');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
-
     useEffect(() => {
-        fetchTableData();
+        setInvoices(invoicesData);
     }, []);
 
-    return (<>
-        <Navbar />
-        <div className="py-10 mt-[96px]">
-            <TabsDemo />
-        </div>
-        <div>
+    return (
+        <>
             <Navbar />
+            <div className="py-10 mt-[96px]">
+                <TabsDemo />
+            </div>
             <div className="flex flex-col m-10 mt-24">
                 <div className="m-14">
                     <Table>
                         <TableHeader className="sticky top-24 bg-white z-10">
                             <TableRow>
-                                <TableHead className="text-orange-700">Date</TableHead>
-                                <TableHead className="text-orange-700">Category</TableHead>
-                                <TableHead className="text-orange-700">Amount</TableHead>
-                                <TableHead className="text-orange-700 ml-10">Account Number</TableHead>
-                                <TableHead className="text-orange-700 w-36">Merchant Name</TableHead>
-                                <TableHead className="text-orange-700">Comments</TableHead>
+                                <TableHead className="text-orange-700">Id</TableHead>
+                                <TableHead className="text-orange-700">From Date</TableHead>
+                                <TableHead className="text-orange-700">To Date</TableHead>
+                                <TableHead className="text-orange-700">Method</TableHead>
+                                <TableHead className="text-orange-700 w-36">Comment</TableHead>
+                                <TableHead className="text-orange-700 ml-10">Amount</TableHead>
+                            
                                 <TableHead className="text-right text-orange-700">Status</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
                             {invoices.map((invoice) => (
-                                <TableRow key={invoice.date}>
-                                    <TableCell className="font-medium">{invoice.date}</TableCell>
-                                    <TableCell>{invoice.category}</TableCell>
-                                    <TableCell>{invoice.amount}</TableCell>
-                                    <TableCell className="ml-10">{invoice.account_number}</TableCell>
-                                    <TableCell className="w-36">{invoice.merchant_name}</TableCell>
-                                    <TableCell>{invoice.comment}</TableCell>
+                                <TableRow key={invoice.invoice}>
+                                    <TableCell className="font-medium">{invoice.invoice}</TableCell>
+                                    <TableCell>{invoice.fromDate}</TableCell>
+                                    <TableCell>{invoice.toDate}</TableCell>
+                                    <TableCell>{invoice.paymentMethod}</TableCell>
+                                    <TableCell className="w-36">{invoice.comments}</TableCell>
+                                    <TableCell className="ml-10">{invoice.totalAmount}</TableCell>
+                                    
                                     <TableCell className="text-right">
-                                        <span className={`px-2 py-1 rounded ${statusClasses[invoice.submission_status]}`}>
-                                            {invoice.submission_status}
+                                        <span className={`px-2 py-1 rounded ${statusClasses[invoice.paymentStatus || invoice.submission_status || 'Pending']}`}>
+                                            {invoice.paymentStatus || invoice.submission_status}
                                         </span>
                                     </TableCell>
                                 </TableRow>
@@ -102,6 +150,6 @@ export default function Landing() {
                     </Table>
                 </div>
             </div>
-        </div>
-    </>)
+        </>
+    );
 }
