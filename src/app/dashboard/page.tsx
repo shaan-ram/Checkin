@@ -80,7 +80,7 @@ export default function DashboardPage() {
     console.log(process.env.NEXT_PUBLIC_API_URL);
 
     try {
-      const response = await fetch(`https://checkin-ui-seven.vercel.app/api/claim/submitclaim`, {
+      const response = await fetch(`http://3.7.102.212:8081/api/claim/submitclaim`, {
         
         method: 'POST',
         headers: {
